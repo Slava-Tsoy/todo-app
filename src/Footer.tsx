@@ -1,4 +1,4 @@
-import TasksFilter from "./TasksFilter";
+import TasksFilter from './TasksFilter';
 
 function Footer() {
 	return (
@@ -8,6 +8,6 @@ function Footer() {
 			<button class="clear-completed">Clear completed</button>
 		</footer>
 	);
-};
+}
 
 export default Footer;

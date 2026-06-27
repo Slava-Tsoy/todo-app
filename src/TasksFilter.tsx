@@ -12,6 +12,6 @@ function TasksFilter() {
 			</li>
 		</ul>
 	);
-};
+}
 
 export default TasksFilter;

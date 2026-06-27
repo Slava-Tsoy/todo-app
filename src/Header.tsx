@@ -1,4 +1,4 @@
-import NewTaskForm from "./NewTaskForm";
+import NewTaskForm from './NewTaskForm';
 
 function Header() {
 	return (
@@ -7,6 +7,6 @@ function Header() {
 			<NewTaskForm />
 		</header>
 	);
-};
+}
 
 export default Header;
