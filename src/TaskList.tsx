@@ -1,19 +1,22 @@
-import Task from './Task';
+import { Task, TaskEdit } from './Task';
+import { format } from 'date-fns';
 
 function TaskList() {
+	const created_now = 'created ' + format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+	
 	return (
 		<ul className="todo-list">
 			<li className="completed">
-				<Task />
-				<input type="text" className="edit" value="Editing task" />
+				<Task description='Completed task' created={created_now} />
+				<TaskEdit />
 			</li>
 			<li className="editing">
-				<Task />
-				<input type="text" className="edit" value="Editing task" />
+				<Task description='Active task' created={created_now} />
+				<TaskEdit />
 			</li>
 			<li>
-				<Task />
-				<input type="text" className="edit" value="Editing task" />
+				<Task description='Active task' created={created_now} />
+				<TaskEdit />
 			</li>
 		</ul>
 	);
