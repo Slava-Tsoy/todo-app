@@ -2,18 +2,18 @@ import Task from './Task';
 
 function TaskList() {
 	return (
-		<ul class="todo-list">
-			<li class="completed">
+		<ul className="todo-list">
+			<li className="completed">
 				<Task />
-				<input type="text" class="edit" value="Editing task" />
+				<input type="text" className="edit" value="Editing task" />
 			</li>
-			<li class="editing">
+			<li className="editing">
 				<Task />
-				<input type="text" class="edit" value="Editing task" />
+				<input type="text" className="edit" value="Editing task" />
 			</li>
 			<li>
 				<Task />
-				<input type="text" class="edit" value="Editing task" />
+				<input type="text" className="edit" value="Editing task" />
 			</li>
 		</ul>
 	);
