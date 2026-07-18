@@ -4,9 +4,10 @@ interface Props {
 };
 
 function NewTaskForm(props: Props) {
-	const handleKeyUp = (e: any) => {	
-		if (e.target.value && e.code === 'Enter') {
-			const item = {id: props.items.length + 1, desc: e.target.value};
+	const handleKeyUp = (e: any) => {
+		if (e.target.value && e.key === 'Enter') {
+			const maxId = props.items.reduce((max: number, obj: any) => obj.id > max ? obj.id : max, 0);
+			const item = {id: maxId + 1, desc: e.target.value, status: 'active'};
 			props.setItems(item);
 			e.target.value = '';
 		}
