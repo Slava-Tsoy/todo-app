@@ -1,7 +1,9 @@
+import TimeAgo from './TimeAgo';
+
 interface Props {
 	id: number,
 	desc: string,
-	created: string
+	created: any,
 	change: any,
 	remove: any,
 	edit: any,
@@ -26,7 +28,7 @@ export function Task(props: Props) {
 			<input className="toggle" type="checkbox" onChange={handleChange} />
 			<label>
 				<span className="description">{props.desc}</span>
-				<span className="created">{props.created}</span>
+				<TimeAgo date={props.created} />
 			</label>
 			<button className="icon icon-edit" onClick={handleEdit}></button>
 			<button className="icon icon-destroy" onClick={handleRemove}></button>

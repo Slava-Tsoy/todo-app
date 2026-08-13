@@ -1,5 +1,4 @@
 import { Task, TaskEdit } from './Task';
-import { format } from 'date-fns';
 
 interface Props {
 	items: any,
@@ -11,7 +10,6 @@ interface Props {
 };
 
 function TaskList(props: Props) {
-	const created_now = 'created ' + format(new Date(), 'yyyy-MM-dd HH:mm:ss');
 	const tasks = props.items;
 	const change = props.changeItem;
 	const remove = props.removeItem;
@@ -22,8 +20,8 @@ function TaskList(props: Props) {
 		<ul className="todo-list">{
 			tasks.map((task: any) => (
 				<li className={task.status} key={task.id}>
-					<Task id={task.id} desc={task.desc} change={change} remove={remove} edit={edit} finish={finish} created={created_now} />
-					<TaskEdit id={task.id} desc={task.desc} change={change} remove={remove} edit={edit} finish={finish} created={created_now} />
+					<Task id={task.id} desc={task.desc} change={change} remove={remove} edit={edit} finish={finish} created={task.created} />
+					<TaskEdit id={task.id} desc={task.desc} change={change} remove={remove} edit={edit} finish={finish} created={task.created} />
 				</li>
 			))
 		}</ul>
