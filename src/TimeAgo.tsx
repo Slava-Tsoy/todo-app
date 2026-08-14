@@ -20,7 +20,7 @@ function TimeAgo(props: Props) {
 		return () => clearInterval(interval);
 	}, [props.date]);
 
-	return <span className="created">created {timeAgo}</span>;
+	return <span className="created">Created {timeAgo}</span>;
 }
 
 export default TimeAgo;

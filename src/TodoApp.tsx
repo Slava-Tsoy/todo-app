@@ -5,14 +5,14 @@ import Footer from './Footer';
 import TaskList from './TaskList';
 
 function TodoApp() {
-	let items = [
-		{ userId: 1, id: 1, title: 'Starting the Markup', desc: 'Starting the Markup', status: 'active', completed: false},
-		{ userId: 1, id: 2, title: 'Adding Interactivity', desc: 'Adding Interactivity', status: 'active', completed: false},
-		{ userId: 1, id: 3, title: 'Adding Functionality', desc: 'Adding Functionality', status: 'active', completed: false},
-		{ userId: 1, id: 4, title: 'Final Touches', desc: 'Final Touches', status: 'active', completed: false}
+	const data = [
+		{ userId: 1, id: 1, title: 'Starting the Markup', completed: false, status: 'active'},
+		{ userId: 1, id: 2, title: 'Adding Interactivity', completed: true, status: 'active'},
+		{ userId: 1, id: 3, title: 'Adding Functionality', completed: true, status: 'active'},
+		{ userId: 1, id: 4, title: 'Final Touches', completed: false, status: 'active'}
 	];
 
-	items = items.map(item => {
+	const items = data.map(item => {
 		if (!Object.prototype.hasOwnProperty.call(item, 'created')) {
 			return {...item, created: new Date()};
 		}
@@ -29,24 +29,30 @@ function TodoApp() {
 		setTasks(tasks.filter(task => task.id !== id));
 	};
 
-	const changeTask = (id: number, status: string) => {
-		setTasks(tasks.map(task => task.id === id ? {...task, status: status} : task));
-	};
-
-	const editTask = (id: number, desc: string, status: string) => {
-		setTasks(tasks.map(task => task.id === id ? {...task, desc: desc, status: status} : task));
-	};
-
-	const finishedTask = (id: number, status: string, checked: boolean) => {
-		setTasks(tasks.map(task => task.id === id ? {...task, status: checked ? status : 'active'} : task));
-	};
+	const changeTask = (id: number, status: string, event?: any) => {
+		if (event !== void 0) {
+			const checked = event.target.checked;
+			const value = event.target.value;
+			
+			switch (event.type) {
+				case 'change':
+					setTasks(tasks.map(task => task.id === id ? {...task, completed: checked, status: checked ? status : 'active'} : task));
+					break;
+				case 'keyup':
+					setTasks(tasks.map(task => task.id === id ? {...task, title: value, completed: false, status: status} : task));
+					break;
+			}			
+		} else {
+			setTasks(tasks.map(task => task.id === id ? {...task, status: status} : task));
+		}
+	}
 
 	return (
 		<>
 			<section className="todoapp">
-				<Header items={tasks} setItems={addTask} />
+				<Header items={tasks} newItem={addTask} />
 				<section className="main">
-					<TaskList items={tasks} setItems={addTask} removeItem={removeTask} changeItem={changeTask} editItem={editTask} finishedItem={finishedTask} />
+					<TaskList items={tasks} setItems={addTask} removeItem={removeTask} changeItem={changeTask} />
 					<Footer />
 				</section>
 			</section>
