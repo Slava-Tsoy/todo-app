@@ -13,10 +13,6 @@ export function Task(props: Props) {
 		props.remove(props.id);
 	};
 
-	// const handleEdit = (event: any) => {
-	// 	props.change(props.id, 'editing', event);
-	// };
-
 	const handleChange = (event: any) => {
 		switch (event.type) {
 			case 'change':
