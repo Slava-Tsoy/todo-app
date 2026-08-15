@@ -3,6 +3,7 @@ import TimeAgo from './TimeAgo';
 interface Props {
 	id: number,
 	title: string,
+	completed: boolean,
 	created: any,
 	remove: any,
 	change: any
@@ -19,14 +20,14 @@ export function Task(props: Props) {
 				props.change(props.id, 'completed', event);
 				break;
 			case 'click':
-				props.change(props.id, 'editing');
+				props.change(props.id, 'editing', event);
 				break;
 		}
 	};
 
 	return (
 		<div className="view">
-			<input className="toggle" type="checkbox" onChange={handleChange} />
+			<input className="toggle" type="checkbox" checked={props.completed} onChange={handleChange} />
 			<label>
 				<span className="description">{props.title}</span>
 				<TimeAgo date={props.created} />

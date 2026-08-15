@@ -15,9 +15,9 @@ function TaskList(props: Props) {
 	return (
 		<ul className="todo-list">{
 			tasks.map((task: any) => (
-				<li className={task.status} key={task.id}>
-					<Task id={task.id} title={task.title} remove={remove} change={change} created={task.created} />
-					<TaskEdit id={task.id} title={task.title} remove={remove} change={change} created={task.created} />
+				<li className={task.completed ? 'completed' : task.status} key={task.id}>
+					<Task id={task.id} title={task.title} completed={task.completed} remove={remove} change={change} created={task.created} />
+					<TaskEdit id={task.id} title={task.title} completed={task.completed} remove={remove} change={change} created={task.created} />
 				</li>
 			))
 		}</ul>

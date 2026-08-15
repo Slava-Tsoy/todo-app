@@ -1,10 +1,15 @@
 import TasksFilter from './TasksFilter';
 
-function Footer() {
+interface Props {
+	items: any,
+	filterTasks: any
+};
+
+function Footer(props: Props) {
 	return (
 		<footer className="footer">
 			<span className="todo-count">1 items left</span>
-			<TasksFilter />
+			<TasksFilter items={props.items} filterTasks={props.filterTasks} />
 			<button className="clear-completed">Clear completed</button>
 		</footer>
 	);
