@@ -5,22 +5,22 @@ interface Props {
 	title: string,
 	completed: boolean,
 	created: any,
-	remove: any,
-	change: any
+	removeItem: any,
+	changeItem: any
 }
 
 export function Task(props: Props) {
 	const handleRemove = () => {
-		props.remove(props.id);
+		props.removeItem(props.id);
 	};
 
 	const handleChange = (event: any) => {
 		switch (event.type) {
 			case 'change':
-				props.change(props.id, 'completed', event);
+				props.changeItem(props.id, event);
 				break;
 			case 'click':
-				props.change(props.id, 'editing', event);
+				event.target.closest('li').className = 'editing';
 				break;
 		}
 	};
@@ -40,12 +40,18 @@ export function Task(props: Props) {
 
 export function TaskEdit(props: Props) {
 	const handleKeyUp = (event: any) => {
-		if (event.target.value && event.key === 'Enter') {
-			props.change(props.id, 'active', event);
+		const [target, value, key] = [event.target, event.target.value, event.key];
+		
+		if (value && key === 'Enter') {
+			const parent = target.closest('li');
+			const checkBox = parent.querySelector('.toggle');
 			
-			const checkBox = event.target.previousElementSibling.querySelector('.toggle');
-			
-			if (checkBox.checked) checkBox.checked = false;
+			if (checkBox.checked) {
+				checkBox.checked = false;
+			}
+
+			parent.className = 'active';
+			props.changeItem(props.id, event);
 		}
 	};
 	

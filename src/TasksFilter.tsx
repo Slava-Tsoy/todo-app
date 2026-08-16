@@ -7,15 +7,16 @@ function TasksFilter(props: Props) {
 	const handleClick = (event: any) => {
 		const target = event.target as HTMLElement;
 
-		if (target.tagName !== 'BUTTON' || target.className === 'selected') return;
+		if (target.tagName !== 'BUTTON' || target.className === 'selected') {
+			return;
+		}
 		
 		const panel = target.closest('ul.filters');
 		const buttons = panel?.querySelectorAll('button');
+		const value = target.textContent;
 
 		buttons?.forEach(elem => elem.className = '');
 		target.className = 'selected';
-
-		const value = target.innerText;
 		
 		props.filterTasks(value);
 	};

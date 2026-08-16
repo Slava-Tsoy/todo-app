@@ -11,11 +11,11 @@ function NewTaskForm(props: Props) {
 				id: maxId + 1,
 				title: e.target.value,
 				created: new Date(),
-				completed: false,
-				status: 'active'
+				completed: false
 			};
-			props.newItem(item);
+			
 			e.target.value = '';
+			props.newItem(item);
 		}
 	}
 
