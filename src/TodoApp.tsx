@@ -69,8 +69,13 @@ function TodoApp() {
 		}
 	};
 
-	const counterTasks = (tasks: any[]) => {
-		return tasks.filter((task: any) => !task.completed).length;
+	const counterTasks = (things: any) => {
+		return things.filter((thing: any) => !thing.completed).length;
+	};
+
+	const clearCompleted = (things: any) => {
+		setTasks(things.filter((thing: any) => !thing.completed));
+		filterTasks('All');
 	};
 
 	return (
@@ -79,7 +84,7 @@ function TodoApp() {
 				<Header items={tasks} newItem={addTask} />
 				<section className="main">
 					<TaskList items={tasks} removeItem={removeTask} changeItem={changeTask} />
-					<Footer items={tasks} filterTasks={filterTasks} amountTasks={counterTasks(tasks)} />
+					<Footer items={tasks} filterTasks={filterTasks} amountTasks={counterTasks(tasks)} clearCompleted={clearCompleted} />
 				</section>
 			</section>
 		</>
