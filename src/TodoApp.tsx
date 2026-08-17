@@ -42,7 +42,7 @@ function TodoApp() {
 			case 'keyup': {
 				const editedTasks = tasks.map((task: any) => task.id === id ? {...task, title: value, completed: false} : task)
 				setTasks(editedTasks);
-				filterTasks('all');
+				filterTasks('All');
 				break;
 			}
 		}
@@ -51,7 +51,7 @@ function TodoApp() {
 	const filterTasks = (flag?: string) => {
 		const list = document.querySelector('ul.todo-list');
 		const [active, completed] = [list?.querySelectorAll('li.active'), list?.querySelectorAll('li.completed')]
-		const filterButtons = document.querySelector('ul.filters')?.querySelectorAll('button');
+		const filterTabs = document.querySelector('ul.filters')?.querySelectorAll('button');
 
 		switch (flag) {
 			case 'Completed':
@@ -65,8 +65,12 @@ function TodoApp() {
 			default:
 				completed?.forEach((li) => li.className = 'completed');
 				active?.forEach((li) => li.className = 'active');
-				filterButtons?.forEach((button, index) => button.className = index === 0 ? 'selected' : '');
+				filterTabs?.forEach((tab, index) => tab.className = index === 0 ? 'selected' : '');
 		}
+	};
+
+	const counterTasks = (tasks: any[]) => {
+		return tasks.filter((task: any) => !task.completed).length;
 	};
 
 	return (
@@ -75,7 +79,7 @@ function TodoApp() {
 				<Header items={tasks} newItem={addTask} />
 				<section className="main">
 					<TaskList items={tasks} removeItem={removeTask} changeItem={changeTask} />
-					<Footer items={tasks} filterTasks={filterTasks} />
+					<Footer items={tasks} filterTasks={filterTasks} amountTasks={counterTasks(tasks)} />
 				</section>
 			</section>
 		</>
