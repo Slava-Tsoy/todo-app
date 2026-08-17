@@ -5,14 +5,14 @@ import Footer from './Footer';
 import TaskList from './TaskList';
 
 function TodoApp() {
-	let items = [
-		{ userId: 1, id: 1, title: 'Starting the Markup', desc: 'Starting the Markup', status: 'active', completed: false},
-		{ userId: 1, id: 2, title: 'Adding Interactivity', desc: 'Adding Interactivity', status: 'active', completed: false},
-		{ userId: 1, id: 3, title: 'Adding Functionality', desc: 'Adding Functionality', status: 'active', completed: false},
-		{ userId: 1, id: 4, title: 'Final Touches', desc: 'Final Touches', status: 'active', completed: false}
+	const data = [
+		{ userId: 1, id: 1, title: 'Starting the Markup', completed: false},
+		{ userId: 1, id: 2, title: 'Adding Interactivity', completed: true},
+		{ userId: 1, id: 3, title: 'Adding Functionality', completed: true},
+		{ userId: 1, id: 4, title: 'Final Touches', completed: false}
 	];
-
-	items = items.map(item => {
+	
+	const items = data.map((item: any) => {
 		if (!Object.prototype.hasOwnProperty.call(item, 'created')) {
 			return {...item, created: new Date()};
 		}
@@ -22,32 +22,69 @@ function TodoApp() {
 	const [tasks, setTasks] = useState(items);
 
 	const addTask = (newTask: any) => {
-		setTasks(tasks => [...tasks, newTask]);
+		setTasks((tasks: any) => [...tasks, newTask]);
 	};
 
 	const removeTask = (id: number) => {
-		setTasks(tasks.filter(task => task.id !== id));
+		const removedTasks = tasks.filter((task: any) => task.id !== id);
+		setTasks(removedTasks);
 	};
 
-	const changeTask = (id: number, status: string) => {
-		setTasks(tasks.map(task => task.id === id ? {...task, status: status} : task));
+	const changeTask = (id: number, event: any) => {
+		const [checked, value, type] = [event.target.checked, event.target.value, event.type]
+		
+		switch (type) {
+			case 'change':{
+				const changedTasks = tasks.map((task: any) => task.id === id ? {...task, completed: checked} : task);
+				setTasks(changedTasks);
+				break;
+			}
+			case 'keyup': {
+				const editedTasks = tasks.map((task: any) => task.id === id ? {...task, title: value, completed: false} : task)
+				setTasks(editedTasks);
+				filterTasks('All');
+				break;
+			}
+		}
+	}
+
+	const filterTasks = (flag?: string) => {
+		const list = document.querySelector('ul.todo-list');
+		const [active, completed] = [list?.querySelectorAll('li.active'), list?.querySelectorAll('li.completed')]
+		const filterTabs = document.querySelector('ul.filters')?.querySelectorAll('button');
+
+		switch (flag) {
+			case 'Completed':
+				completed?.forEach((li) => li.className = 'completed');
+				active?.forEach((li) => li.className = 'active hidden');
+				break;
+			case 'Active':
+				completed?.forEach((li) => li.className = 'completed hidden');
+				active?.forEach((li) => li.className = 'active');
+				break;
+			default:
+				completed?.forEach((li) => li.className = 'completed');
+				active?.forEach((li) => li.className = 'active');
+				filterTabs?.forEach((tab, index) => tab.className = index === 0 ? 'selected' : '');
+		}
 	};
 
-	const editTask = (id: number, desc: string, status: string) => {
-		setTasks(tasks.map(task => task.id === id ? {...task, desc: desc, status: status} : task));
+	const counterTasks = (things: any) => {
+		return things.filter((thing: any) => !thing.completed).length;
 	};
 
-	const finishedTask = (id: number, status: string, checked: boolean) => {
-		setTasks(tasks.map(task => task.id === id ? {...task, status: checked ? status : 'active'} : task));
+	const clearCompleted = (things: any) => {
+		setTasks(things.filter((thing: any) => !thing.completed));
+		filterTasks('All');
 	};
 
 	return (
 		<>
 			<section className="todoapp">
-				<Header items={tasks} setItems={addTask} />
+				<Header items={tasks} newItem={addTask} />
 				<section className="main">
-					<TaskList items={tasks} setItems={addTask} removeItem={removeTask} changeItem={changeTask} editItem={editTask} finishedItem={finishedTask} />
-					<Footer />
+					<TaskList items={tasks} removeItem={removeTask} changeItem={changeTask} />
+					<Footer items={tasks} filterTasks={filterTasks} amountTasks={counterTasks(tasks)} clearCompleted={clearCompleted} />
 				</section>
 			</section>
 		</>

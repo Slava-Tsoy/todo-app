@@ -1,6 +1,6 @@
 interface Props {
 	items: any,
-	setItems: any
+	newItem: any
 };
 
 function NewTaskForm(props: Props) {
@@ -10,13 +10,12 @@ function NewTaskForm(props: Props) {
 			const item = {
 				id: maxId + 1,
 				title: e.target.value,
-				desc: e.target.value,
-				status: 'active',
-				completed: false,
-				created: new Date()
+				created: new Date(),
+				completed: false
 			};
-			props.setItems(item);
+			
 			e.target.value = '';
+			props.newItem(item);
 		}
 	}
 

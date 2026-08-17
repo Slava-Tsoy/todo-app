@@ -2,52 +2,60 @@ import TimeAgo from './TimeAgo';
 
 interface Props {
 	id: number,
-	desc: string,
+	title: string,
+	completed: boolean,
 	created: any,
-	change: any,
-	remove: any,
-	edit: any,
-	finish: any
+	removeItem: any,
+	changeItem: any
 }
 
 export function Task(props: Props) {
 	const handleRemove = () => {
-		props.remove(props.id);
+		props.removeItem(props.id);
 	};
 
-	const handleEdit = () => {
-		props.change(props.id, 'editing');
-	};
-
-	const handleChange = (e: any) => {
-		props.finish(props.id, 'completed', e.target.checked);
+	const handleChange = (event: any) => {
+		switch (event.type) {
+			case 'change':
+				props.changeItem(props.id, event);
+				break;
+			case 'click':
+				event.target.closest('li').className = 'editing';
+				break;
+		}
 	};
 
 	return (
 		<div className="view">
-			<input className="toggle" type="checkbox" onChange={handleChange} />
+			<input className="toggle" type="checkbox" checked={props.completed} onChange={handleChange} />
 			<label>
-				<span className="description">{props.desc}</span>
+				<span className="description">{props.title}</span>
 				<TimeAgo date={props.created} />
 			</label>
-			<button className="icon icon-edit" onClick={handleEdit}></button>
+			<button className="icon icon-edit" onClick={handleChange}></button>
 			<button className="icon icon-destroy" onClick={handleRemove}></button>
 		</div>
 	);
 }
 
 export function TaskEdit(props: Props) {
-	const handleKeyUp = (e: any) => {
-		if (e.target.value && e.key === 'Enter') {
-			props.edit(props.id, e.target.value, 'active');
+	const handleKeyUp = (event: any) => {
+		const [target, value, key] = [event.target, event.target.value, event.key];
+		
+		if (value && key === 'Enter') {
+			const parent = target.closest('li');
+			const checkBox = parent.querySelector('.toggle');
 			
-			const checkBox = e.target.previousElementSibling.querySelector('.toggle');
-			
-			if (checkBox.checked) checkBox.checked = false;
+			if (checkBox.checked) {
+				checkBox.checked = false;
+			}
+
+			parent.className = 'active';
+			props.changeItem(props.id, event);
 		}
 	};
 	
 	return (
-		<input type="text" className="edit" defaultValue={props.desc} onKeyUp={handleKeyUp} />
+		<input type="text" className="edit" defaultValue={props.title} onKeyUp={handleKeyUp} />
 	);
 }
