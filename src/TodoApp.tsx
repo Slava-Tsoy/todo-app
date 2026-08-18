@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './styles.css';
 import Header from './Header';
 import Footer from './Footer';
 import TaskList from './TaskList';
 
 function TodoApp() {
-	const data = [
+	const innerData = [
 		{ userId: 1, id: 1, title: 'Starting the Markup', completed: false},
 		{ userId: 1, id: 2, title: 'Adding Interactivity', completed: true},
 		{ userId: 1, id: 3, title: 'Adding Functionality', completed: true},
 		{ userId: 1, id: 4, title: 'Final Touches', completed: false}
 	];
 	
-	const items = data.map((item: any) => {
+	const items = innerData.map((item: any) => {
 		if (!Object.prototype.hasOwnProperty.call(item, 'created')) {
 			return {...item, created: new Date()};
 		}
@@ -20,6 +20,35 @@ function TodoApp() {
 	});
 	
 	const [tasks, setTasks] = useState(items);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		fetch('https://jsonplaceholder.typicode.com/todos')
+		.then((res: Response) => res.json())
+		.then((data: any) => {
+			setTasks(data.map((item: any) => {
+				if (!Object.prototype.hasOwnProperty.call(item, 'created')) {
+					return {...item, created: new Date()};
+				}
+				return item;
+			}));
+			setLoading(false);
+		})
+		.catch((error) => {
+			console.error(error);
+			setLoading(false);
+		});
+	}, []);
+
+	if (loading) {
+		return (
+			<section className="todoapp">
+				<header className="header">
+					<h1>Loading...</h1>
+				</header>
+			</section>
+		);
+	}
 
 	const addTask = (newTask: any) => {
 		setTasks((tasks: any) => [...tasks, newTask]);
