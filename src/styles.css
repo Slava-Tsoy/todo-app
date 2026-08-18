@@ -225,6 +225,7 @@ body {
 }
 
 .todo-list li label .created {
+	white-space: nowrap;
 	font-size: 13px;
 	color: gray;
 }
